@@ -1,47 +1,41 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
+func Balanced(input string) bool {
+	bracketStack := make([]rune, 0)
 
-func isBalanced(s string) bool {
-	stack := []rune{} 
-	for _, char := range s {
+	bracketPairs := map[rune]rune{
+		')': '(',
+		']': '[',
+		'}': '{',
+	}
+
+	for _, char := range input {
 		switch char {
-		case '(', '{', '[':
-			stack = append(stack, char)
-		case ')':
-			if len(stack) == 0 || stack[len(stack)-1] != '(' {
+		case '(', '[', '{':
+			bracketStack = append(bracketStack, char)
+		case ')', ']', '}':
+			if len(bracketStack) == 0 || bracketStack[len(bracketStack)-1] != bracketPairs[char] {
 				return false
 			}
-			stack = stack[:len(stack)-1] 
-		case '}':
-			if len(stack) == 0 || stack[len(stack)-1] != '{' {
-				return false
-			}
-			stack = stack[:len(stack)-1]
-		case ']':
-			if len(stack) == 0 || stack[len(stack)-1] != '[' {
-				return false
-			}
-			stack = stack[:len(stack)-1]
+			bracketStack = bracketStack[:len(bracketStack)-1]
 		}
 	}
 
-	return len(stack) == 0 
+	return len(bracketStack) == 0
 }
 
 func main() {
-	input := "{()}"
-	if isBalanced(input) {
+	input1 := "{()}"
+	if Balanced(input1) {
 		fmt.Println("Скобки сбалансированы")
 	} else {
 		fmt.Println("Скобки несбалансированы")
 	}
 
-	input = "{()}(])"
-	if isBalanced(input) {
+	input2 := "{()}(])"
+	if Balanced(input2) {
 		fmt.Println("Скобки сбалансированы")
 	} else {
 		fmt.Println("Скобки несбалансированы")
